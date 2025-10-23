@@ -36,6 +36,18 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Create a layout wrapper component
+const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
+        <Header />
+        <main>
+            {children}
+        </main>
+        <WhatsAppWidget />
+        <Footer />
+    </div>
+);
+
 const AppRoutes = () => {
     const location = useLocation();
     const [loading, setLoading] = React.useState(true);
@@ -44,8 +56,6 @@ const AppRoutes = () => {
         const timer = setTimeout(() => setLoading(false), 2500); // Simulate loading time
         return () => clearTimeout(timer);
     }, []);
-
-    const isAdminRoute = location.pathname.startsWith('/admin');
 
     return (
         <>
@@ -60,150 +70,96 @@ const AppRoutes = () => {
             >
                 <ScrollToTop />
                 
-                <Routes location={location} key={location.pathname}>
-                    {/* Admin Routes */}
-                    <Route path="/admin/login" element={<AdminLoginPage />} />
-                    <Route path="/admin" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <Navigate to="/admin/dashboard" replace />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/dashboard" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminDashboardPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/products" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminProductsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/blogs" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminBlogsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/services" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminServicesPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/submissions" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminSubmissionsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    
-                    {/* Public Routes */}
-                    <Route path="/" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <HomePage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/about" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <AboutPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/products" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <ProductsPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/products/:slug" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <ProductDetailPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/services" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <ServicesPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/blog" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <BlogPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/blog/:slug" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <BlogPostPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                    <Route path="/contact" element={
-                        <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-                            <Header />
-                            <main>
-                                <AnimatePresence mode="wait">
-                                    <ContactPage />
-                                </AnimatePresence>
-                            </main>
-                            <WhatsAppWidget />
-                            <Footer />
-                        </div>
-                    } />
-                </Routes>
+                <AnimatePresence mode="wait">
+                    <Routes location={location} key={location.pathname}>
+                        {/* Admin Routes */}
+                        <Route path="/admin/login" element={<AdminLoginPage />} />
+                        <Route path="/admin" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <Navigate to="/admin/dashboard" replace />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin/dashboard" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <AdminDashboardPage />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin/products" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <AdminProductsPage />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin/blogs" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <AdminBlogsPage />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin/services" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <AdminServicesPage />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin/submissions" element={
+                            <ProtectedRoute>
+                                <AdminLayout>
+                                    <AdminSubmissionsPage />
+                                </AdminLayout>
+                            </ProtectedRoute>
+                        } />
+                        
+                        {/* Public Routes */}
+                        <Route path="/" element={
+                            <PublicLayout>
+                                <HomePage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/about" element={
+                            <PublicLayout>
+                                <AboutPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/products" element={
+                            <PublicLayout>
+                                <ProductsPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/products/:slug" element={
+                            <PublicLayout>
+                                <ProductDetailPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/services" element={
+                            <PublicLayout>
+                                <ServicesPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/blog" element={
+                            <PublicLayout>
+                                <BlogPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/blog/:slug" element={
+                            <PublicLayout>
+                                <BlogPostPage />
+                            </PublicLayout>
+                        } />
+                        <Route path="/contact" element={
+                            <PublicLayout>
+                                <ContactPage />
+                            </PublicLayout>
+                        } />
+                    </Routes>
+                </AnimatePresence>
             </motion.div>
         </>
     );
