@@ -50,110 +50,101 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
 const AppRoutes = () => {
     const location = useLocation();
-    const [loading, setLoading] = React.useState(true);
-
-    React.useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1000); // Reduced loading time
-        return () => clearTimeout(timer);
-    }, []);
-
-    if (loading) {
-        return <Preloader />;
-    }
 
     return (
         <>
             <ScrollToTop />
-            <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    {/* Admin Routes */}
-                    <Route path="/admin/login" element={<AdminLoginPage />} />
-                    <Route path="/admin" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <Navigate to="/admin/dashboard" replace />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/dashboard" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminDashboardPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/products" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminProductsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/blogs" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminBlogsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/services" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminServicesPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/admin/submissions" element={
-                        <ProtectedRoute>
-                            <AdminLayout>
-                                <AdminSubmissionsPage />
-                            </AdminLayout>
-                        </ProtectedRoute>
-                    } />
-                    
-                    {/* Public Routes */}
-                    <Route path="/" element={
-                        <PublicLayout>
-                            <HomePage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/about" element={
-                        <PublicLayout>
-                            <AboutPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/products" element={
-                        <PublicLayout>
-                            <ProductsPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/products/:slug" element={
-                        <PublicLayout>
-                            <ProductDetailPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/services" element={
-                        <PublicLayout>
-                            <ServicesPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/blog" element={
-                        <PublicLayout>
-                            <BlogPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/blog/:slug" element={
-                        <PublicLayout>
-                            <BlogPostPage />
-                        </PublicLayout>
-                    } />
-                    <Route path="/contact" element={
-                        <PublicLayout>
-                            <ContactPage />
-                        </PublicLayout>
-                    } />
-                </Routes>
-            </AnimatePresence>
+            <Routes location={location}>
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/admin" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <Navigate to="/admin/dashboard" replace />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminDashboardPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/products" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminProductsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/blogs" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminBlogsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/services" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminServicesPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/submissions" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminSubmissionsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                
+                {/* Public Routes */}
+                <Route path="/" element={
+                    <PublicLayout>
+                        <div>
+                            <h1>Test Homepage</h1>
+                            <p>If you can see this, the routing works!</p>
+                        </div>
+                    </PublicLayout>
+                } />
+                <Route path="/about" element={
+                    <PublicLayout>
+                        <AboutPage />
+                    </PublicLayout>
+                } />
+                <Route path="/products" element={
+                    <PublicLayout>
+                        <ProductsPage />
+                    </PublicLayout>
+                } />
+                <Route path="/products/:slug" element={
+                    <PublicLayout>
+                        <ProductDetailPage />
+                    </PublicLayout>
+                } />
+                <Route path="/services" element={
+                    <PublicLayout>
+                        <ServicesPage />
+                    </PublicLayout>
+                } />
+                <Route path="/blog" element={
+                    <PublicLayout>
+                        <BlogPage />
+                    </PublicLayout>
+                } />
+                <Route path="/blog/:slug" element={
+                    <PublicLayout>
+                        <BlogPostPage />
+                    </PublicLayout>
+                } />
+                <Route path="/contact" element={
+                    <PublicLayout>
+                        <ContactPage />
+                    </PublicLayout>
+                } />
+            </Routes>
         </>
     );
 }
