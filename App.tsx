@@ -36,119 +36,51 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Create a layout wrapper component
-const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
-        <Header />
-        <main>
-            {children}
-        </main>
-        <WhatsAppWidget />
-        <Footer />
-    </div>
-);
-
 const AppRoutes = () => {
     const location = useLocation();
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 2500); // Simulate loading time
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <>
+        <AnimatePresence>
+            {loading && <Preloader />}
+        </AnimatePresence>
+        
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: loading ? 0 : 1 }}
+            transition={{ duration: 0.5 }}
+        >
             <ScrollToTop />
-            <Routes location={location}>
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/admin" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <Navigate to="/admin/dashboard" replace />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/dashboard" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <AdminDashboardPage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/products" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <AdminProductsPage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/blogs" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <AdminBlogsPage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/services" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <AdminServicesPage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/submissions" element={
-                    <ProtectedRoute>
-                        <AdminLayout>
-                            <AdminSubmissionsPage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                
-                {/* Public Routes */}
-                <Route path="/" element={
-                    <PublicLayout>
-                        <div>
-                            <h1>Test Homepage</h1>
-                            <p>If you can see this, the routing works!</p>
-                        </div>
-                    </PublicLayout>
-                } />
-                <Route path="/about" element={
-                    <PublicLayout>
-                        <AboutPage />
-                    </PublicLayout>
-                } />
-                <Route path="/products" element={
-                    <PublicLayout>
-                        <ProductsPage />
-                    </PublicLayout>
-                } />
-                <Route path="/products/:slug" element={
-                    <PublicLayout>
-                        <ProductDetailPage />
-                    </PublicLayout>
-                } />
-                <Route path="/services" element={
-                    <PublicLayout>
-                        <ServicesPage />
-                    </PublicLayout>
-                } />
-                <Route path="/blog" element={
-                    <PublicLayout>
-                        <BlogPage />
-                    </PublicLayout>
-                } />
-                <Route path="/blog/:slug" element={
-                    <PublicLayout>
-                        <BlogPostPage />
-                    </PublicLayout>
-                } />
-                <Route path="/contact" element={
-                    <PublicLayout>
-                        <ContactPage />
-                    </PublicLayout>
-                } />
-            </Routes>
+            <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 font-sans">
+            <Header />
+            <main>
+                <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/products/:slug" element={<ProductDetailPage />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                    <Route path="/blog" element={<BlogPage />} />
+                    <Route path="/blog/:slug" element={<BlogPostPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/admin/login" element={<AdminLoginPage />} />
+                </Routes>
+                </AnimatePresence>
+            </main>
+            <WhatsAppWidget />
+            <Footer />
+            </div>
+        </motion.div>
         </>
     );
 }
-
 
 const Root = () => (
     <ThemeProvider>
