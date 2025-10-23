@@ -45,29 +45,56 @@ const AppRoutes = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    const isLoginRoute = location.pathname === '/admin/login';
     const isAdminRoute = location.pathname.startsWith('/admin');
 
-    if (isAdminRoute && !isLoginRoute) {
+    if (isAdminRoute) {
         return (
-             <Routes>
+            <Routes>
                 <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/admin/*" element={
+                <Route path="/admin" element={
                     <ProtectedRoute>
                         <AdminLayout>
-                            <Routes>
-                                <Route path="dashboard" element={<AdminDashboardPage />} />
-                                <Route path="products" element={<AdminProductsPage />} />
-                                <Route path="blogs" element={<AdminBlogsPage />} />
-                                <Route path="services" element={<AdminServicesPage />} />
-                                <Route path="submissions" element={<AdminSubmissionsPage />} />
-                                <Route index element={<Navigate to="dashboard" />} />
-                            </Routes>
+                            <Navigate to="/admin/dashboard" replace />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-             </Routes>
-        )
+                <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminDashboardPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/products" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminProductsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/blogs" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminBlogsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/services" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminServicesPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/submissions" element={
+                    <ProtectedRoute>
+                        <AdminLayout>
+                            <AdminSubmissionsPage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+            </Routes>
+        );
     }
 
     return (
@@ -95,7 +122,6 @@ const AppRoutes = () => {
                     <Route path="/blog" element={<BlogPage />} />
                     <Route path="/blog/:slug" element={<BlogPostPage />} />
                     <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/admin/login" element={<AdminLoginPage />} />
                 </Routes>
                 </AnimatePresence>
             </main>
